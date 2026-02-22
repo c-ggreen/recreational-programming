@@ -24,12 +24,12 @@ def start():
                 with conn:
                     # 1024 is the buffer size, i.e. the maximum amount of data that can be received at once in bytes. If I want to receive more data than 1024 bytes, I need to increase the buffer size or create a loop to receive the data in chunks
                     request = conn.recv(1024).decode()
-                    # print(f"Received request from {addr}: {request}")
+                    # print(f"Received request from {addr}:\r\n {request}")
                     if not request:
                         continue
 
-                    method, path, parameters = parse_request(request)
-                    response = handle_request(method, path, parameters)
+                    method, path, parameters, body = parse_request(request)
+                    response = handle_request(method, path, parameters, body)
 
                     conn.sendall(response)
         except KeyboardInterrupt:

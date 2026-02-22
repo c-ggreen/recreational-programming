@@ -6,10 +6,13 @@ def parse_request(request_text: str):
     lines: list[str] = request_text.split("\r\n")
     # First line containes the Method, Path, and Version. We only need the Method and Path for simple requests
     request_line: str = lines[0]
-    print(f"Request Line: {request_line}\n-----")
+    print(f"Request Line: {request_line}\r\n-----")
+    body_line: str = lines[10] or None
+    print(f"Body: {body_line}")
     method, path, version = request_line.split()
     parameters = parse_qeury_parameters(path)
-    return method, path, parameters
+    body = parse_body(body_line)
+    return method, path, parameters, body
 
 
 def parse_qeury_parameters(path: str) -> dict:
@@ -23,7 +26,13 @@ def parse_qeury_parameters(path: str) -> dict:
     return parameters
 
 
-def handle_request(method: str, path: str, parameters: dict):
+def parse_body(body: str) -> dict:
+    if body:
+        return json.loads(body)
+    return None
+
+
+def handle_request(method: str, path: str, parameters: dict, body: dict):
     if path == "/":
         return build_response(200, json.dumps({"message": "Success!"}))
     elif path.startswith("/withParameters"):
@@ -35,7 +44,23 @@ def handle_request(method: str, path: str, parameters: dict):
                 ),
             )
         elif method == "GET":
-            return build_response(200, json.dumps({"message": "No parameters received."}))
+            return build_response(
+                200,
+                json.dumps(
+                    {"message": "No parameters received.", "Parameters": parameters}
+                ),
+            )
+        else:
+            return build_response(404, json.dumps({"message": "Method not supported."}))
+    elif path.startswith("/withBody"):
+        if method == "POST" and body:
+            return build_response(
+                200, json.dumps({"message": "Body received!", "body": body})
+            )
+        else:
+            return build_response(
+                404, json.dumps({"message": "Method not supported, or body not found."})
+            )
     else:
         return build_response(404, json.dumps({"message": "Not Found!"}))
 
