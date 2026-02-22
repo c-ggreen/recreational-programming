@@ -1,5 +1,5 @@
 from pathlib import Path
-from utils import load_historical_stock_data, csv_to_list, get_todays_date, FILE_SUFFIX, calculate_daily_returns, daily_returns_to_string
+from utils import load_historical_stock_data, csv_to_list, get_todays_date, FILE_SUFFIX, calculate_daily_returns, daily_returns_to_string, calculate_cumulative_return
 
 PERIOD = "1y" # y, mo, d, ytd, or max
 TICKER = "NFLX"
@@ -15,7 +15,11 @@ def main():
 
     history: list[dict[str, str]] = csv_to_list(TICKER, today)
 
-    daily_returns_to_string(calculate_daily_returns(history))
+    daily_returns: list[list] = calculate_daily_returns(history)
+    daily_returns_to_string(daily_returns)
+
+    cumulative_return = calculate_cumulative_return(daily_returns)
+    print(cumulative_return)
 
 
 if __name__ == "__main__":

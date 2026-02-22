@@ -47,14 +47,16 @@ def calculate_daily_returns(data: list[dict[str, str]]) -> list[list]:
         date: str = element.get("Date").split()[0]
         current = float(element.get("Close"))
 
-        # Calculating the percentage return
-        percentage_return = ((current / prev) - 1) * 100
-        #Rounding percentage
-        decimal_value = Decimal(str(percentage_return)) 
+        # Calculating the decimal return
+        decimanl_return = ((current / prev) - 1)
+        # Rounding decimal
+        decimal_value = Decimal(str(decimanl_return)) 
         rounded_decimal = decimal_value.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
+        percentage_return = float(rounded_decimal)*100
+
         # Adding the date and return to the output array
-        output.append([date, rounded_decimal])
+        output.append([date, rounded_decimal, percentage_return])
 
         # Setting the previous days Close to the current in preparation of the next iteration
         prev = current
@@ -63,6 +65,18 @@ def calculate_daily_returns(data: list[dict[str, str]]) -> list[list]:
 
 
 def daily_returns_to_string(data: list[list]) -> None:
-    print("Date\t\tPercentage")
+    print("Date\t\tPercentage\t\t")
     for element in data:
-        print(f"{element[0]}\t{element[1]}\r\n")
+        print(f"{element[0]}\t{element[1]}\t{element[2]}\r\n")
+
+
+def calculate_cumulative_return(daily_return_list: list[list]) -> float:
+    gross_return = 0
+    for index, element in enumerate(daily_return_list):
+        if index == 0:
+            gross_return = float(element[1]) + 1.0
+            continue
+
+        gross_return = (float(element[1]) + 1.0) * gross_return
+    
+    return (gross_return - 1.0) * 100
