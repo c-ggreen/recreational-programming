@@ -1,7 +1,8 @@
 import socket
+import traceback
 from utils.http_utils import parse_request, handle_request
 
-HOST = '127.0.0.1'
+HOST = "127.0.0.1"
 PORT = 8080
 
 
@@ -12,7 +13,9 @@ def start():
         server.bind((HOST, PORT))
         # Starts the server
         server.listen()
-        print(f"Server running on http://{HOST}:{PORT} \r\nPress Ctrl+C to stop the server.")
+        print(
+            f"Server running on http://{HOST}:{PORT} \r\nPress Ctrl+C to stop the server."
+        )
 
         try:
             while True:
@@ -20,17 +23,22 @@ def start():
                 conn, addr = server.accept()
                 with conn:
                     # 1024 is the buffer size, i.e. the maximum amount of data that can be received at once in bytes. If I want to receive more data than 1024 bytes, I need to increase the buffer size or create a loop to receive the data in chunks
-                    request = conn.recv(1024).decode() 
+                    request = conn.recv(1024).decode()
                     # print(f"Received request from {addr}: {request}")
                     if not request:
                         continue
 
                     method, path, parameters = parse_request(request)
                     response = handle_request(method, path, parameters)
-                    
+
                     conn.sendall(response)
         except KeyboardInterrupt:
-                print("\nShutting down server gracefully...")
+            print("\nShutting down server gracefully...")
+        except Exception as e:
+            print(
+                f"The server is shutting down unexpectedly due to the following exception:\n{e}"
+            )
+            traceback.print_exc()
 
 
 if __name__ == "__main__":

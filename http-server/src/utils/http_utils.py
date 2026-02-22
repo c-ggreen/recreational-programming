@@ -11,6 +11,7 @@ def parse_request(request_text: str):
     parameters = parse_qeury_parameters(path)
     return method, path, parameters
 
+
 def parse_qeury_parameters(path: str) -> dict:
     parameters: dict = {}
     if "?" in path:
@@ -27,21 +28,23 @@ def handle_request(method: str, path: str, parameters: dict):
         return build_response(200, json.dumps({"message": "Success!"}))
     elif path.startswith("/withParameters"):
         if method == "GET" and parameters:
-            return build_response(200, json.dumps(
-                {"message": "Query parameters received!", "Parameters": parameters}
-                ))
+            return build_response(
+                200,
+                json.dumps(
+                    {"message": "Query parameters received!", "Parameters": parameters}
+                ),
+            )
+        elif method == "GET":
+            return build_response(200, json.dumps({"message": "No parameters received."}))
     else:
         return build_response(404, json.dumps({"message": "Not Found!"}))
-    
+
 
 def build_response(status_code: int, body: str, content_type="application/json"):
-    reason = {
-        200: "OK",
-        404: "Not Found"
-    }[status_code]
+    reason = {200: "OK", 404: "Not Found"}[status_code]
 
     body_bytes = body.encode()
-    
+
     # Format of an HTTP response.
     response = (
         f"HTTP/1.1 {status_code} {reason}\r\n"
