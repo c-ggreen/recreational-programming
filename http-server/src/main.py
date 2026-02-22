@@ -25,8 +25,8 @@ def start():
                     if not request:
                         continue
 
-                    method, path = parse_request(request)
-                    response = handle_request(method, path)
+                    method, path, parameters = parse_request(request)
+                    response = handle_request(method, path, parameters)
                     
                     conn.sendall(response)
         except KeyboardInterrupt:

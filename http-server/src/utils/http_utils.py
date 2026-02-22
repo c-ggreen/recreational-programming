@@ -1,6 +1,5 @@
 import json
 
-from utils.data_utils import fetch_user_data_by_id
 
 def parse_request(request_text: str):
     # HTTP requests are lines of text separated by \r\n, so we split the request as such
@@ -9,9 +8,10 @@ def parse_request(request_text: str):
     request_line: str = lines[0]
     print(f"Request Line: {request_line}\n-----")
     method, path, version = request_line.split()
-    return method, path
+    parameters = parse_qeury_parameters(path)
+    return method, path, parameters
 
-def parse_qeury_parameters(path: str):
+def parse_qeury_parameters(path: str) -> dict:
     parameters: dict = {}
     if "?" in path:
         endpoint, query_string = path.split("?")
@@ -22,13 +22,14 @@ def parse_qeury_parameters(path: str):
     return parameters
 
 
-def handle_request(method: str, path: str):
+def handle_request(method: str, path: str, parameters: dict):
     if path == "/":
         return build_response(200, json.dumps({"message": "Success!"}))
-    elif path.startswith("/users"):
-        parameters: dict = parse_qeury_parameters(path=path)
+    elif path.startswith("/withParameters"):
         if method == "GET" and parameters:
-            return build_response(200, json.dumps(fetch_user_data_by_id(parameters=parameters)))
+            return build_response(200, json.dumps(
+                {"message": "Query parameters received!", "Parameters": parameters}
+                ))
     else:
         return build_response(404, json.dumps({"message": "Not Found!"}))
     
