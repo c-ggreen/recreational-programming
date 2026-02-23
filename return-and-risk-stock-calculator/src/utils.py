@@ -1,4 +1,7 @@
 import csv
+import math
+import statistics
+
 from datetime import datetime as dt
 from zoneinfo import ZoneInfo
 from decimal import Decimal, ROUND_HALF_UP
@@ -36,47 +39,72 @@ def calculate_daily_returns(data: list[dict[str, str]]) -> list[list]:
     output: list[list] = []
     prev = 0
     current = 0
-
     for index, element in enumerate(data):
         # Skip the first Day but save the Close for the next iteration
         if index == 0:
             prev = float(element.get("Close"))
             continue
-
         # Getting the date and it's Closing value
         date: str = element.get("Date").split()[0]
         current = float(element.get("Close"))
-
-        # Calculating the decimal return
-        decimanl_return = ((current / prev) - 1)
-        # Rounding decimal
-        decimal_value = Decimal(str(decimanl_return)) 
-        rounded_decimal = decimal_value.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
-
-        percentage_return = float(rounded_decimal)*100
-
-        # Adding the date and return to the output array
-        output.append([date, rounded_decimal, percentage_return])
-
+        # Calculating the daily return
+        daily_return = (current / prev) - 1
+        # Daily return in percentage form
+        daily_return_percentage = daily_return * 100
+        # Adding the date, return, and percentage to the output array
+        output.append([date, daily_return, daily_return_percentage])
         # Setting the previous days Close to the current in preparation of the next iteration
         prev = current
-
     return output
 
 
 def daily_returns_to_string(data: list[list]) -> None:
     print("Date\t\tPercentage\t\t")
     for element in data:
-        print(f"{element[0]}\t{element[1]}\t{element[2]}\r\n")
+        print(f"{element[0]}\t{element[1]:.2f}\t{element[2]:.2f}%\r\n")
 
 
 def calculate_cumulative_return(daily_return_list: list[list]) -> float:
     gross_return = 0
     for index, element in enumerate(daily_return_list):
         if index == 0:
-            gross_return = float(element[1]) + 1.0
+            gross_return = element[1] + 1.0
             continue
-
-        gross_return = (float(element[1]) + 1.0) * gross_return
-    
+        gross_return = (element[1] + 1.0) * gross_return
     return (gross_return - 1.0) * 100
+
+
+def calculate_volatility(data: list[dict[str, str]]):
+    logs: list = []
+    prev = 0
+    current = 0
+    for index, element in enumerate(data):
+        # Skip the first Day but save the Close for the next iteration
+        if index == 0:
+            prev = float(element.get("Close"))
+            continue
+        current = float(element.get("Close"))
+        # Calculating the logarithms
+        logs.append(math.log(current / prev))
+        # Setting the previous days Close to the current in preparation of the next iteration
+        prev = current
+    # Return the product of the standard deviation of all the logs and the square root of all the data points in percent form
+    return (math.sqrt(len(data)) * statistics.stdev(logs)) * 100
+
+
+def calculate_sharpe_ratio(daily_return_list: list[list], history: list[dict], risk_free_rate:int = 0.04):
+    daily_risk_free_rate = risk_free_rate/len(history)
+
+    daily_returns: list[float] = []
+    for element in daily_return_list:
+        # Extracting decimal value from daily returns list
+        daily_returns.append(element[1])
+    
+    daily_mean = statistics.mean(daily_returns)
+    daily_stdev = statistics.stdev(daily_returns)
+
+    daily_sharpe = (daily_mean - daily_risk_free_rate) / daily_stdev
+
+    annualized_sharpe = daily_sharpe * math.sqrt(len(history))
+
+    return daily_sharpe, annualized_sharpe
