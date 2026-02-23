@@ -92,19 +92,16 @@ def calculate_volatility(data: list[dict[str, str]]):
     return (math.sqrt(len(data)) * statistics.stdev(logs)) * 100
 
 
-def calculate_sharpe_ratio(daily_return_list: list[list], history: list[dict], risk_free_rate:int = 0.04):
-    daily_risk_free_rate = risk_free_rate/len(history)
-
+def calculate_sharpe_ratio(
+    daily_return_list: list[list], history: list[dict], risk_free_rate: int = 0.04
+):
+    daily_risk_free_rate = risk_free_rate / len(history)
     daily_returns: list[float] = []
     for element in daily_return_list:
         # Extracting decimal value from daily returns list
         daily_returns.append(element[1])
-    
     daily_mean = statistics.mean(daily_returns)
     daily_stdev = statistics.stdev(daily_returns)
-
     daily_sharpe = (daily_mean - daily_risk_free_rate) / daily_stdev
-
     annualized_sharpe = daily_sharpe * math.sqrt(len(history))
-
     return daily_sharpe, annualized_sharpe
