@@ -4,7 +4,6 @@ import statistics
 
 from datetime import datetime as dt
 from zoneinfo import ZoneInfo
-from decimal import Decimal, ROUND_HALF_UP
 
 import yfinance as yf
 
@@ -30,9 +29,6 @@ def csv_to_list(ticker: str, date: str) -> list[dict[str, str]]:
 
 def get_todays_date() -> str:
     return str(dt.date(dt.now(tz)))
-
-
-# TODO: Funcs to calculate: Daily Returns, Cumulative Return, Volatility, Sharpe Ratio
 
 
 def calculate_daily_returns(data: list[dict[str, str]]) -> list[list]:
