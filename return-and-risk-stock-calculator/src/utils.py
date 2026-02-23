@@ -59,7 +59,7 @@ def calculate_daily_returns(data: list[dict[str, str]]) -> list[list]:
 
 
 def daily_returns_to_string(data: list[list]) -> None:
-    print("Date\t\tPercentage\t\t")
+    print("Date\t\tDecimal\tPercentage\t\t")
     for element in data:
         print(f"{element[0]}\t{element[1]:.2f}\t{element[2]:.2f}%\r\n")
 

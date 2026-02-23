@@ -25,7 +25,7 @@ def main():
     print(f"Volatility: {volatility:.2f}%")
 
     daily_sharpe, annualized_sharpe = calculate_sharpe_ratio(daily_returns, history)
-    print(f"Daily Sharpe: {daily_sharpe}, Annualized Sharpe: {annualized_sharpe}")
+    print(f"Daily Sharpe: {daily_sharpe:.2f}, Annualized Sharpe: {annualized_sharpe:.2f}")
 
 if __name__ == "__main__":
     main()
