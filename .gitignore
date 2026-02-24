@@ -94,4 +94,36 @@ temp/
 .cache/
 *.csv
 *.txt
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Package Files (JAR, WAR, EAR)
+# These should be built from source, not stored in the repo
+*.jar
+*.war
+*.ear
+
+# Maven build output
+target/
+
+# Gradle build output
+.gradle/
+build/
+
+# IntelliJ IDEA settings
+.idea/
+*.iml
+out/
+
+# Eclipse settings
+.settings/
+.project
+.classpath
 bin/
+
+# Virtual Machine crash logs
+hs_err_pid*
