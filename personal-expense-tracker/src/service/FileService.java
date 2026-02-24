@@ -5,19 +5,23 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileService {
     private static final String PATH = "src/expenses.txt";
 
-    public static void readExpensesFile(){
-                // Use try-with-resources to automatically close the reader
+    public static List<String> readExpensesFile(){
         try (BufferedReader reader = new BufferedReader(new FileReader(PATH))) {
             String line;
+            List<String> output = new ArrayList<>();
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                output.add(line);
             }
+            return output;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 

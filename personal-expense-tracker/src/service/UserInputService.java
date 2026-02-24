@@ -9,15 +9,15 @@ import model.Expense;
 import model.Category;
 
 public class UserInputService {
-    private static final int[] promptChoices = { 1, 2 };
+    private static final int[] promptChoices = { 1, 2, 3 };
 
     public static void selectOption() {
         Scanner scanner = new Scanner(System.in);
         try {
-
             String prompt = "Select an option:" + "\n" +
                     "[1]: Add an expense." + "\n" +
-                    "[2]: Show all expenses.";
+                    "[2]: Show all expenses." + "\n" +
+                    "[3]: Show total of expenses.";
             System.out.println(prompt);
             int choice = scanner.nextByte();
 
@@ -29,6 +29,9 @@ public class UserInputService {
                         break;
                     case 2:
                         ExpenseService.showAllExpenses();
+                        break;
+                    case 3:
+                        ExpenseService.showTotalExpense();
                         break;
                     default:
                         break;
@@ -52,7 +55,7 @@ public class UserInputService {
             System.out.println("Name of the expense?");
             String name = scanner.nextLine();
 
-            System.out.println("Category of the expense? (RETAIL, GROCERY, TRANSPORTATION, OTHER");
+            System.out.println("Category of the expense? (RETAIL, GROCERY, TRANSPORTATION, OTHER)");
             String category_string = scanner.nextLine();
             Category category = Category.valueOf(category_string.toUpperCase());
 

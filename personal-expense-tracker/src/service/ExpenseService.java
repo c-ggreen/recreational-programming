@@ -1,14 +1,26 @@
 package service;
 
+import java.util.List;
+
 import model.Expense;
 
 public class ExpenseService {
     public static void addExpense(Expense expense){
-        String text = expense.getId() + "," + expense.getName() + "," + expense.getDescription() + "," + expense.getAmount() + "," + expense.getTimestamp();
+        String text = expense.getId() + "," + expense.getName() + "," + expense.getCategory() + "," + expense.getAmount() + "," + expense.getTimestamp();
         FileService.writeToExpensesFile(text);
     }
 
     public static void showAllExpenses(){
-        FileService.readExpensesFile();
+        List<String> expenses = FileService.readExpensesFile();
+        expenses.forEach(element -> System.out.println(element));
+    }
+
+    public static void showTotalExpense(){
+        List<String> expenses = FileService.readExpensesFile();
+        float totalAmount = 0.0f;
+        for(String element : expenses){
+             totalAmount += Float.parseFloat(element.split(",")[3]);
+        }
+        System.out.printf("Total expense: $%.2f%n", totalAmount);
     }
 }
