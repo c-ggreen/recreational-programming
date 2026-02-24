@@ -66,11 +66,11 @@ public class Expense {
     @Override
     public String toString(){
         return "-----" + "\n" +
-        "ID:" + this.id.toString() + "\n" +
-        "Name: " + this.name + "\n" +
-        "Description: " + this.description + "\n" +
-        "Amount: " + this.amount + "\n" +
-        "Timestamp: " + this.timestamp;
+        "ID:" + id.toString() + "\n" +
+        "Name: " + name + "\n" +
+        "Description: " + description + "\n" +
+        "Amount: " + amount + "\n" +
+        "Timestamp: " + timestamp;
     }
 
 }

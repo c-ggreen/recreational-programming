@@ -37,16 +37,16 @@ public class UserInputService {
             System.out.println(e);
         } finally {
             if (scanner != null) {
-                scanner.close(); // Ensures closure even if an exception occurred
+                scanner.close();
             }
         }
 
     }
 
     public static Expense getExpenseInput() {
+        Scanner scanner = new Scanner(System.in);
         try {
             Expense expense = new Expense();
-            Scanner scanner = new Scanner(System.in);
 
             System.out.println("Name of the expense?");
             String name = scanner.nextLine();
@@ -69,6 +69,10 @@ public class UserInputService {
         } catch (Exception e) {
             System.out.println(e);
             return null;
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
         }
     }
 }
