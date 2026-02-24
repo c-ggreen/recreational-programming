@@ -1,0 +1,74 @@
+package service;
+
+import java.time.Instant;
+import java.util.Scanner;
+import java.util.UUID;
+import java.util.stream.IntStream;
+
+import model.Expense;
+
+public class UserInputService {
+    private static final int[] promptChoices = { 1, 2 };
+
+    public static void selectOption() {
+        Scanner scanner = new Scanner(System.in);
+        try {
+
+            String prompt = "Select an option:" + "\n" +
+                    "[1]: Add an expense." + "\n" +
+                    "[2]: Show all expenses.";
+            System.out.println(prompt);
+            int choice = scanner.nextByte();
+
+            if (IntStream.of(promptChoices).anyMatch(x -> x == choice)) {
+                switch (choice) {
+                    case 1:
+                        Expense expense = getExpenseInput();
+                        ExpenseService.addExpense(expense);
+                        break;
+                    case 2:
+                        ExpenseService.showAllExpenses();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (scanner != null) {
+                scanner.close(); // Ensures closure even if an exception occurred
+            }
+        }
+
+    }
+
+    public static Expense getExpenseInput() {
+        try {
+            Expense expense = new Expense();
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Name of the expense?");
+            String name = scanner.nextLine();
+
+            System.out.println("Description of the expense?");
+            String description = scanner.nextLine();
+
+            System.out.println("Amount of the expense?");
+            float amount = scanner.nextFloat();
+
+            scanner.close();
+
+            expense.setId(UUID.randomUUID());
+            expense.setName(name);
+            expense.setDescription(description);
+            expense.setAmount(amount);
+            expense.setTimestamp(Instant.now());
+
+            return expense;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+}
