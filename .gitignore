@@ -94,3 +94,4 @@ temp/
 .cache/
 *.csv
 *.txt
+bin/
