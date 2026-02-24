@@ -8,17 +8,17 @@ public class Expense {
 
     private UUID id;
     private String name;
-    private String description;
+    private Category category;
     private float amount;
     private Instant timestamp;
 
     public Expense() {
     }
 
-    public Expense(UUID id, String name, String description, float amount, Instant timestamp) {
+    public Expense(UUID id, String name, Category category, float amount, Instant timestamp) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        this.category = category;
         this.amount = amount;
         this.timestamp = timestamp;
     }
@@ -39,12 +39,12 @@ public class Expense {
         this.name = name;
     }
 
-    public String getDescription() {
-        return this.description;
+    public Category getCategory() {
+        return this.category;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public float getAmount() {
@@ -68,7 +68,7 @@ public class Expense {
         return "-----" + "\n" +
         "ID:" + id.toString() + "\n" +
         "Name: " + name + "\n" +
-        "Description: " + description + "\n" +
+        "Category: " + category.toString() + "\n" +
         "Amount: " + amount + "\n" +
         "Timestamp: " + timestamp;
     }

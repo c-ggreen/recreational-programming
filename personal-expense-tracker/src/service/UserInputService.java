@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 
 import model.Expense;
+import model.Category;
 
 public class UserInputService {
     private static final int[] promptChoices = { 1, 2 };
@@ -51,17 +52,17 @@ public class UserInputService {
             System.out.println("Name of the expense?");
             String name = scanner.nextLine();
 
-            System.out.println("Description of the expense?");
-            String description = scanner.nextLine();
+            System.out.println("Category of the expense? (RETAIL, GROCERY, TRANSPORTATION, OTHER");
+            String category_string = scanner.nextLine();
+            Category category = Category.valueOf(category_string.toUpperCase());
 
             System.out.println("Amount of the expense?");
-            float amount = scanner.nextFloat();
-
-            scanner.close();
+            String amount_string = scanner.nextLine();
+            float amount = Float.parseFloat(amount_string);
 
             expense.setId(UUID.randomUUID());
             expense.setName(name);
-            expense.setDescription(description);
+            expense.setCategory(category);
             expense.setAmount(amount);
             expense.setTimestamp(Instant.now());
 
