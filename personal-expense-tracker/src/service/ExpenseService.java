@@ -6,7 +6,7 @@ import model.Expense;
 
 public class ExpenseService {
     public static void addExpense(Expense expense){
-        String text = expense.getId() + "," + expense.getName() + "," + expense.getCategory() + "," + expense.getAmount() + "," + expense.getTimestamp();
+        String text = expense.id() + "," + expense.name() + "," + expense.category() + "," + expense.amount() + "," + expense.timestamp();
         FileService.writeToExpensesFile(text);
     }
 

@@ -50,8 +50,6 @@ public class UserInputService {
     public static Expense getExpenseInput() {
         Scanner scanner = new Scanner(System.in);
         try {
-            Expense expense = new Expense();
-
             System.out.println("Name of the expense?");
             String name = scanner.nextLine();
 
@@ -63,13 +61,7 @@ public class UserInputService {
             String amount_string = scanner.nextLine();
             float amount = Float.parseFloat(amount_string);
 
-            expense.setId(UUID.randomUUID());
-            expense.setName(name);
-            expense.setCategory(category);
-            expense.setAmount(amount);
-            expense.setTimestamp(Instant.now());
-
-            return expense;
+            return new Expense(UUID.randomUUID(), name, category, amount, Instant.now());
         } catch (Exception e) {
             System.out.println(e);
             return null;
