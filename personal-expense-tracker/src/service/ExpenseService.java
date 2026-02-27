@@ -6,8 +6,10 @@ import model.Expense;
 
 public class ExpenseService {
     public static void addExpense(Expense expense){
+        System.out.println("\nAdding expense...");
         String text = expense.id() + "," + expense.name() + "," + expense.category() + "," + expense.amount() + "," + expense.timestamp();
         FileService.writeToExpensesFile(text);
+        System.out.println("Expense added!");
     }
 
     public static void showAllExpenses(){

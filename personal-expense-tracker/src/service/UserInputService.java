@@ -16,13 +16,16 @@ public class UserInputService {
         try {
             boolean isLooping = true;
             while (isLooping) {
-                String prompt = "Select an option:" + "\n" +
+                String prompt = "\nSelect an option:" + "\n" +
                         "[1]: Add an expense." + "\n" +
                         "[2]: Show all expenses." + "\n" +
                         "[3]: Show total of expenses." + "\n" +
                         "[0]: Exit";
                 System.out.println(prompt);
-                int choice = scanner.nextInt();
+                // Using .nextLine() instead of .nextInt() to avoid "Scanner Trap" bug
+                // where if a .nextLine() is invoked after .nextInt() it skips the accompanying
+                // .println() altogether
+                int choice = Integer.parseInt(scanner.nextLine());
 
                 if (IntStream.of(promptChoices).anyMatch(x -> x == choice)) {
                     switch (choice) {
