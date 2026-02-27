@@ -9,32 +9,39 @@ import model.Expense;
 import model.Category;
 
 public class UserInputService {
-    private static final int[] promptChoices = { 1, 2, 3 };
+    private static final int[] promptChoices = { 1, 2, 3, 0 };
 
     public static void selectOption() {
         Scanner scanner = new Scanner(System.in);
         try {
-            String prompt = "Select an option:" + "\n" +
-                    "[1]: Add an expense." + "\n" +
-                    "[2]: Show all expenses." + "\n" +
-                    "[3]: Show total of expenses.";
-            System.out.println(prompt);
-            int choice = scanner.nextByte();
+            boolean isLooping = true;
+            while (isLooping) {
+                String prompt = "Select an option:" + "\n" +
+                        "[1]: Add an expense." + "\n" +
+                        "[2]: Show all expenses." + "\n" +
+                        "[3]: Show total of expenses." + "\n" +
+                        "[0]: Exit";
+                System.out.println(prompt);
+                int choice = scanner.nextInt();
 
-            if (IntStream.of(promptChoices).anyMatch(x -> x == choice)) {
-                switch (choice) {
-                    case 1:
-                        Expense expense = getExpenseInput();
-                        ExpenseService.addExpense(expense);
-                        break;
-                    case 2:
-                        ExpenseService.showAllExpenses();
-                        break;
-                    case 3:
-                        ExpenseService.showTotalExpense();
-                        break;
-                    default:
-                        break;
+                if (IntStream.of(promptChoices).anyMatch(x -> x == choice)) {
+                    switch (choice) {
+                        case 1:
+                            Expense expense = getExpenseInput(scanner);
+                            ExpenseService.addExpense(expense);
+                            break;
+                        case 2:
+                            ExpenseService.showAllExpenses();
+                            break;
+                        case 3:
+                            ExpenseService.showTotalExpense();
+                            break;
+                        case 0:
+                            isLooping = false;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -47,8 +54,7 @@ public class UserInputService {
 
     }
 
-    public static Expense getExpenseInput() {
-        Scanner scanner = new Scanner(System.in);
+    public static Expense getExpenseInput(Scanner scanner) {
         try {
             System.out.println("Name of the expense?");
             String name = scanner.nextLine();
@@ -65,10 +71,6 @@ public class UserInputService {
         } catch (Exception e) {
             System.out.println(e);
             return null;
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
         }
     }
 }
