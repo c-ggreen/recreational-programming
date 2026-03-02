@@ -23,7 +23,7 @@ public class ValidPalindromeTwo {
                 return false;
             }
             i++;
-            j++;
+            j--;
         }
         return true;
     }

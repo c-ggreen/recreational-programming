@@ -4,6 +4,7 @@ import patterns.TwoPointers.ContainerWithMostWater;
 import patterns.TwoPointers.MoveZeroes;
 import patterns.TwoPointers.TwoSum;
 import patterns.TwoPointers.ValidPalindrome;
+import patterns.TwoPointers.ValidPalindromeTwo;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -11,5 +12,6 @@ public class App {
         System.out.println(new ContainerWithMostWater().solution(new int[]{3,4,1,2,2,4,1,3,2}));
         System.out.println(Arrays.toString(new MoveZeroes().solution(new int[]{2,0,4,0,9})));
         System.out.println(new ValidPalindrome().solution("Was it a car or a cat I saw?"));
+        System.out.println(new ValidPalindromeTwo().solution("deeee"));
     }
 }
